@@ -1,12 +1,12 @@
 import React,{useState,useEffect}from "react"
-import {View,Text,Image,StyleSheet,ScrollView,Button} from "react-native"
+import {View,Text,Image,StyleSheet,ScrollView} from "react-native"
 import { ContextElement } from "../../Context/Context"
 import { useContext } from "react"
 import ItemCount from "../ItemCount/ItemCount"
 import Size from "../Size/Size"
 import { useParams } from "react-router-native"
 import MockShoes from "../mock/mockShoes"
-
+import { Button } from 'react-native-paper';
 
 const Detail=()=>{
     const{AddCartList, cartList,setCartList}=useContext(ContextElement)
@@ -77,7 +77,8 @@ const Detail=()=>{
                         
                     </View>
                     {idOk==0 && setIdOk(object.id)/*si es primer prod desde q hago click, osea no cambie size q es donde toma id, digo q si es 0 id q sea object.id*/}
-                    <Button style={StylesOk.button} onPress={()=>handleAdd(quantOk,idOk)} title="Add to Cart"/>
+                    
+                    <Button icon="star-outline" mode="contained" buttonColor="#10497c" onPress={()=>handleAdd(quantOk,idOk)} >Add to Cart</Button>
                    
                     </View>
                     )
@@ -98,7 +99,7 @@ const Detail=()=>{
     )
 
 }
-
+//<Button style={StylesOk.button} onPress={()=>handleAdd(quantOk,idOk)} title="Add to Cart"/>
 export default Detail
 //()=>AddCartList(object)
 const StylesOk=StyleSheet.create({

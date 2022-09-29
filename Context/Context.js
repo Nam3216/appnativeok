@@ -3,6 +3,7 @@ import {View,Text} from "react-native"
 import { createContext } from "react";
 import MockShoes from "../Components/mock/mockShoes";
 
+
 const ContextElement=createContext()
 
 const Context =({children})=>{
@@ -11,6 +12,10 @@ const Context =({children})=>{
     const[cartList,setCartList]=useState([])
     const[sizeOka,setSizeOka]=useState(0)
     const[priceTotal,setPriceTotal]=useState(0)
+    const[link,setLink]=useState("home")//esto y handle link es para que se vea sombreado en navbar cdo cambio de opcion, lo pongo aca asi lo puede usar componente buy
+    //sino, quedaba en cart el link y el estilo del navbar se veia mal en buy
+    const[search,setSearch]=useState(" ")//aca se  guarda lo que se busca en search
+  
 
     const GetList=()=>{
         return new Promise((resolve,reject)=>{
@@ -110,7 +115,13 @@ const AddCartList=(quant,id)=>{
         setCartList([])
     }
 
-    const dataContext={GetObject,object,GetSize,cartList,setSizeOka,sizeOka,AddCartList,EmptyList,DeleteItem,priceTotal,TotalPrice,}
+    const handleLink=(id)=>{
+       
+        setLink(id)
+       
+
+    }
+    const dataContext={GetObject,object,GetSize,cartList,setSizeOka,sizeOka,AddCartList,EmptyList,DeleteItem,priceTotal,TotalPrice,handleLink,link,search,setSearch}
 
     return(
         <ContextElement.Provider value={dataContext}>

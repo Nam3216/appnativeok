@@ -1,7 +1,9 @@
 import React from "react";
-import {View,Text,Image,StyleSheet,Button,TextInput, ScrollView} from "react-native"
+import {View,Text,Image,StyleSheet,TextInput, ScrollView} from "react-native"
 import { useContext } from "react";
 import { ContextElement } from "../../Context/Context";
+import { Button } from 'react-native-paper';
+
 
 const Buy=()=>{
     const{cartList,priceTotal}=useContext(ContextElement)
@@ -27,7 +29,8 @@ const Buy=()=>{
                 <TextInput style={Style.formInput} type="text" placeholder="Full name"></TextInput>
                 <Text style={Style.formText}>Insert your email</Text>
                 <TextInput style={Style.formInput} type="text" placeholder="Email address"></TextInput>
-                <Button onPress={handleBuy} title="Confirm transaction"/>
+               
+                <Button icon="star-outline" mode="contained" buttonColor="#10497c" onPress={handleBuy} >Confirm transaction</Button>
             </View>
             </ScrollView>
 
@@ -43,8 +46,8 @@ export default Buy
 
 const Style=StyleSheet.create({
     img:{
-        width:300,
-        height:200
+        width:200,
+        height:150
     },
     form:{
         width:"100%",
@@ -91,7 +94,7 @@ const Style=StyleSheet.create({
        /* backgroundColor:"grey"*/
     },
     scroll:{
-        marginBottom:80,
+        /*marginBottom:50,*/
         width:"100%"
     }
 

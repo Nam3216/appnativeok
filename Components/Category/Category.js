@@ -4,9 +4,11 @@ import { useParams } from "react-router-native";
 import MockShoes from "../mock/mockShoes";
 import {View,Text,FlatList,StyleSheet} from "react-native"
 import Item from "../Item/Item";
+import Search from "../Pages/Search";
 
 
 const Category=()=>{
+
     const[list,setList]=useState([])
     const{category}=useParams()
    
@@ -39,7 +41,7 @@ const Category=()=>{
        
             <FlatList data={list} style={Style.viewCont}
                 ItemSeparatorComponent={()=><Text></Text>}
-                ListHeaderComponent={<View style={StyleTitle.view}><Text style={StyleTitle.text}>Category {category} </Text></View>}
+                ListHeaderComponent={<View><Search/><View style={StyleTitle.view}><Text style={StyleTitle.text}>Category {category} </Text></View></View>}
                 renderItem={({item})=>(
                  item.size=="S" &&  
                 <Item data={item} msg={"category"}  />
@@ -64,7 +66,7 @@ export  default Category
 const Style=StyleSheet.create({
     viewCont:{
         paddingBottom:80,//para q sea vea bien abajo
-        paddingTop:20
+        //paddingTop:20
     }
 })
 
@@ -76,7 +78,8 @@ const StyleTitle=StyleSheet.create({
         justifyContent:"center",
         alignItems:"center",
         borderRadius:30,
-        marginBottom:30
+        marginBottom:30,
+        marginTop:10
     },
     text:{
         color:"white",

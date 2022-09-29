@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import {View,Text,Image,Button,StyleSheet,SafeAreaView, ScrollView} from "react-native"
+import {View,Text,Image,StyleSheet,SafeAreaView, ScrollView} from "react-native"
 import { useContext } from "react";
 import { ContextElement } from "../../Context/Context";
 import { FlatList } from "react-native";
@@ -7,10 +7,12 @@ import {useNavigate} from "react-router-native"
 import {Link} from "react-router-native"
 import ItemCount from "../ItemCount/ItemCount";
 import Size from "../Size/Size";
+import { Button } from 'react-native-paper';
+import Search from "../Pages/Search";
 
 
 const Cart=()=>{
-    const{cartList,EmptyList,DeleteItem,priceTotal,AddCartList,TotalPrice,modifyQuant}=useContext(ContextElement)
+    const{cartList,EmptyList,DeleteItem,priceTotal,AddCartList,TotalPrice,modifyQuant,handleLink}=useContext(ContextElement)
     const Navigate=useNavigate()
     console.log(priceTotal, "pricetotal")
     const[quantOk,setQuantOk]=useState(0)
@@ -18,7 +20,7 @@ const Cart=()=>{
     const[priceCart,setPriceCart]=useState(0)
     //si es cuando carga la pagina, checkModify va a ser false, jsx va a mostrar TotalPrice de context. si cambio itemcount, se pone true esto y va a mostrar el priceCart que se actualiza ok
     const[checkModify,setCheckModify]=useState(false)
-    console.log(cartList,"cartliilill")
+    //console.log(cartList,"cartliilill")
     
     //viene itemcount cant y lo guarda en state
     const handleQuant=(quant)=>{
@@ -70,15 +72,21 @@ let list=[]
     handleAdd(0,id)
     sum()
    }
-//<Text style={Style.textCart} >Cart</Text>
-
+//funcion cuando apreta boton buy. cambia link a buy asi se ve ok el estilo de navbar, y activa el link navigate buy
+const handleBuy=()=>{
+    handleLink("buy")
+    Navigate("/buy")
+}
 //con el primer view
     return(
         
-        <SafeAreaView style={Style.safe} >
-           
+   <>
+   
+         
               {cartList.length >0 ? (   
-            <ScrollView>
+    <ScrollView style={Style.safe}>
+        <Search/>
+        <View >
                  <View style={Style.viewTitle} >
                     <Text style={Style.title}>Cart</Text>
                 </View>
@@ -95,55 +103,66 @@ let list=[]
                     <Text >Size: {item.size} </Text>
                         
                     <ItemCount handle={handleQuant} initial={item.quantity } price={item.price} />
-                
-                    <Button  onPress={()=>handleAdd(quantOk,item.id)} title="Modifiy Units"/>
-                    
-                    <Button  onPress={()=>handleDelete(item.id)} title="Delete Item"/>
+                    <View style={Style.buttonEmpty}>
+                    <Button icon="star-outline" mode="contained" style={{marginBottom:10}}  onPress={()=>handleAdd(quantOk,item.id)} >Modifiy Units</Button>
+                    <Button icon="star-outline" mode="contained"  onPress={()=>handleDelete(item.id)} >Delete Item</Button>
+                    </View>
+                  
                 </View>)
 
                 })}
                     
-                
-                <View style={Style.viewBuy} >
-                    {checkModify == false ? <Text style={Style.textPrice}>Total Price: {priceTotal} </Text> : <Text style={Style.textPrice}>Total Price: {priceCart} </Text> }
-                    
+                <View>
+                    <View style={Style.viewBuy} >
+                        {checkModify == false ? <Text style={Style.textPrice}>Total Price: {priceTotal} </Text> : <Text style={Style.textPrice}>Total Price: {priceCart} </Text> }
+                    </View>   
                     
 
                 
                     
                 
                     <View style={Style.buttonEmpty}>
-                        <Button onPress={EmptyList} title="Empty Cart" style={Style.flat} />
+                        <Button icon="star-outline" mode="contained" buttonColor="#10497c" onPress={EmptyList} >Empty Cart</Button>
+                       
                     </View>
-                    <View style={Style.buttonEmpty}>
-                        <Button  title="Buy" style={Style.buttonEmpty} onPress={()=>Navigate("/buy")} />
+                    <View style={ cartList.length > 1 ? Style.buttonEmptyBuyCart:Style.buttonEmptyBuy}>
+                        
+                        <Button icon="star-outline" mode="contained" buttonColor="#10497c" onPress={handleBuy} >Buy</Button>
                         
                     </View>
                 </View> 
             </View>
-            </ScrollView>
+        </View>
+    </ScrollView>
             ):(
-                <View style={{marginTop:100}} >
+         
+               
+                <View  style={{ height:585, width:"100%"}}>
+                     <Search/>
+                     <View style={{marginTop:100}}>
                     <Link to={"/"} ><Text style={Style.textCart} >Your cart is empty. Please select some products  </Text></Link>
+                    </View >
                 </View>
+           
             )}
-        </SafeAreaView>
+            
+        </>
       
    
        
     
     )
 }
-
+//()=>Navigate("/buy")
 export default Cart
 //<Text >Total Price: {item.quantity * item.price} </Text>
 const Style=StyleSheet.create({
-    viewTitle:{
+   viewTitle:{
         backgroundColor:"#10497c",
         borderRadius:30,
-        marginTop:20,
+        marginTop:10,
         height:40,
-        marginBottom:20,
+        marginBottom:30,
         justifyContent:"center",
         alignItems:"center"
     },
@@ -151,23 +170,31 @@ const Style=StyleSheet.create({
         color:"white",
         fontWeight:"bold",
       
-        fontSize:18
+        fontSize:24
     },
     buttonEmpty:{
        padding:10,
-      color:"white"
+      color:"white",
+      
        
+    },
+    buttonEmptyBuy:{
+        padding:10,
+        color:"white",
+        
+    },
+    buttonEmptyBuyCart:{
+        padding:10,
+        color:"white",
+     
     },
     
     flat:{
-        marginBottom:30,
-       /* marginTop:30,*/
-      /*  width:"100%",*/
+      
        
         justifyContent:"center",
         alignItems:"center",
-       // minHeight:500
-        
+      
       
         
     },
@@ -177,12 +204,11 @@ const Style=StyleSheet.create({
     },
 
     safe:{
-      // marginBottom:160,//para q se vea bien abajo o
+     
         textAlign:"center",
         width:"100%",
-        
-        
-       
+     
+     
        
        
     },
@@ -201,10 +227,16 @@ const Style=StyleSheet.create({
         fontSize:18
     },
     viewBuy:{
-        backgroundColor:"#10497c"
+        backgroundColor:"#10497c",
+        borderRadius:30,
+        height:40,
+        justifyContent:"center"
     }
 })
-
+//<Button  onPress={()=>handleAdd(quantOk,item.id)} title="Modifiy Units"/>
+//  <Button  onPress={()=>handleDelete(item.id)} title="Delete Item"/>
+// <Button onPress={EmptyList} title="Empty Cart" style={Style.flat} />
+//<Button  title="Buy" style={Style.buttonEmpty} onPress={()=>Navigate("/buy")} />
 /* <View>
                 <Image source={{uri:item.img}} style={{width:100,height:100}}/>
                 <Text>Product: {item.description} </Text>

@@ -8,6 +8,7 @@ import { TouchableWithoutFeedback } from "react-native";
 //import { TouchableHighlight } from "react-native";
 import { useNavigate } from "react-router-native";
 
+
 const Item=({data,msg,key})=>{
     const{img,title,description,price,quantity,id,size}=data
     const Navigate=useNavigate()
@@ -58,7 +59,7 @@ const Item=({data,msg,key})=>{
                 </TouchableWithoutFeedback>
              
             )}
-            
+         
         </View>
  
     )
@@ -75,7 +76,8 @@ const StylesOk=StyleSheet.create({
         marginRight:0,
         resizeMode:"fit",
         alignItems:"center",
-        justifyContent:"center"
+        justifyContent:"center",
+       
         
         },
         imageCategory:{

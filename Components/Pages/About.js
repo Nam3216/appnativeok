@@ -41,7 +41,7 @@ const Style=StyleSheet.create({
         alignItems:"center",
         borderRadius:30,
         marginBottom:30,
-        marginTop:30
+        marginTop:10
     },
     textTitle:{
         color:"white",
